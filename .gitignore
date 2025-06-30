@@ -1,0 +1,65 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Mac
+.DS_Store
+
+# Data/DB/Checkpoints (keep only production DBs)
+databases/*.json
+checkpoints/*.json
+!databases/arcface_database.json
+!databases/lightning_fast_db.json
+
+# Images (ignore all except README)
+Testing images/*
+!Testing images/README.md
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Logs
+*.log
+
+# System
+Thumbs.db
