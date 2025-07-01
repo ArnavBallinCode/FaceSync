@@ -45,7 +45,7 @@ def load_database():
     return True
 
 def get_face_embedding(image_bytes):
-    """Extract face embedding from image bytes"""
+    """Extract face embedding from image bytes - ArcFace accuracy"""
     try:
         img = Image.open(io.BytesIO(image_bytes)).convert('RGB')
         img_np = np.array(img)
@@ -53,17 +53,19 @@ def get_face_embedding(image_bytes):
         result = DeepFace.represent(
             img_path=img_np, 
             model_name=config["model"],
-            enforce_detection=False
+            enforce_detection=True,  # Match ArcFace API accuracy
+            detector_backend='opencv'
         )
         
         if not result:
             return None
         
+        # Same normalization as ArcFace API
         embedding = np.array(result[0]['embedding'], dtype='float32')
         embedding = embedding / np.linalg.norm(embedding)
         
         return embedding
-    except:
+    except Exception as e:
         return None
 
 # Load database on startup
@@ -86,9 +88,9 @@ def root():
 def search_face(
     file: UploadFile = File(...),
     top_k: int = 5,
-    threshold: float = 0.6
+    threshold: float = 0.68  # Match ArcFace threshold
 ):
-    """Ultra-fast face search"""
+    """Ultra-fast face search with ArcFace accuracy"""
     try:
         # Get embedding
         image_bytes = file.file.read()
@@ -103,22 +105,36 @@ def search_face(
             min(top_k, len(embeddings))
         )
         
-        # Build results
+        # Build results with same scoring as ArcFace
         results = []
         for i in range(len(scores[0])):
             idx = indices[0][i]
             score = float(scores[0][i])
             
-            if score >= threshold:
-                results.append({
-                    "person": metadata[idx]["person"],
-                    "confidence": round(score * 100, 2),
-                    "image_path": metadata[idx]["image_path"]
-                })
+            # Convert to distance and confidence like ArcFace API
+            distance = 1 - score
+            confidence = max(0, score * 100)
+            is_match = distance < (1 - threshold)
+            
+            result = {
+                "person": metadata[idx].get("person", "unknown"),
+                "confidence": round(confidence, 2),
+                "distance": round(distance, 4),
+                "is_match": is_match,
+                "rank": i + 1
+            }
+            if "image_path" in metadata[idx]:
+                result["image_path"] = metadata[idx]["image_path"]
+            results.append(result)
         
         return {
             "matches": results,
-            "total_searched": len(embeddings)
+            "total_searched": len(embeddings),
+            "threshold": threshold,
+            "debug_info": {
+                "top_3_raw_scores": [float(scores[0][i]) for i in range(min(3, len(scores[0])))],
+                "query_embedding_norm": float(np.linalg.norm(query_embedding))
+            }
         }
         
     except Exception as e:
