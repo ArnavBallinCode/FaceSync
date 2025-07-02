@@ -1,10 +1,20 @@
-# DeepFace Professional Face Recognition System
+# DeepFace v2 - Professional Face Recognition System
 
-A streamlined, production-ready face recognition suite with:
-- Lightning-fast face matching API (7000+ pre-loaded faces)
-- High-accuracy ArcFace standalone API with database management
-- Professional database builder with incremental updates
-- Clean, minimal project structure optimized for performance
+**Copyright (c) 2025 Arnav Angarkar. All rights reserved.**  
+**Author: Arnav Angarkar**
+
+> **⚠️  PROPRIETARY SOFTWARE - UNAUTHORIZED USE PROHIBITED**  
+> This software is proprietary and confidential. See [LICENSE](./LICENSE) for full terms.
+
+## 🎯 **Perfect Consistency Guarantee**
+
+This system ensures **100% identical results** between database building and lightning-fast matching by using **exactly the same parameters**:
+
+- ✅ **ArcFace Model**: Same model, same version
+- ✅ **Detection**: `enforce_detection=True` (both systems)
+- ✅ **Backend**: `detector_backend='opencv'` (both systems)  
+- ✅ **Normalization**: Identical L2 normalization
+- ✅ **Preprocessing**: Same image conversion pipeline
 
 ## 📁 Project Structure
 

@@ -2,6 +2,20 @@
 """
 Lightning Fast Face Matcher API
 Ultra-fast, minimal face matching with 7000 faces pre-loaded
+
+Copyright (c) 2025 Arnav Angarkar. All rights reserved.
+Author: Arnav Angarkar
+
+PROPRIETARY AND CONFIDENTIAL
+This software and its documentation are proprietary to Arnav Angarkar.
+No part of this software may be copied, reproduced, distributed, transmitted,
+transcribed, stored in a retrieval system, or translated into any human or
+computer language, in any form or by any means, electronic, mechanical,
+magnetic, optical, chemical, manual, or otherwise, without the express
+written permission of Arnav Angarkar.
+
+Unauthorized copying, distribution, or use of this software is strictly
+prohibited and may result in severe civil and criminal penalties.
 """
 from fastapi import FastAPI, File, UploadFile, HTTPException
 import numpy as np
@@ -19,7 +33,12 @@ app = FastAPI(title="Lightning Fast Face Matcher", version="1.0.0")
 embeddings = None
 metadata = []
 faiss_index = None
-config = {"embedding_dim": 512, "model": "ArcFace"}
+config = {
+    "embedding_dim": 512, 
+    "model": "ArcFace",
+    "enforce_detection": True,    # EXACTLY match database builder
+    "detector_backend": "opencv"  # EXACTLY match database builder
+}
 
 def load_database():
     """Load the lightning fast database"""
@@ -45,22 +64,23 @@ def load_database():
     return True
 
 def get_face_embedding(image_bytes):
-    """Extract face embedding from image bytes - ArcFace accuracy"""
+    """Extract face embedding from image bytes - EXACTLY matching database builder"""
     try:
         img = Image.open(io.BytesIO(image_bytes)).convert('RGB')
         img_np = np.array(img)
         
+        # Use EXACT same parameters as database builder
         result = DeepFace.represent(
             img_path=img_np, 
-            model_name=config["model"],
-            enforce_detection=True,  # Match ArcFace API accuracy
-            detector_backend='opencv'
+            model_name=config["model"],                    # ArcFace
+            enforce_detection=config["enforce_detection"], # True
+            detector_backend=config["detector_backend"]    # opencv
         )
         
         if not result:
             return None
         
-        # Same normalization as ArcFace API
+        # Use EXACT same normalization as database builder
         embedding = np.array(result[0]['embedding'], dtype='float32')
         embedding = embedding / np.linalg.norm(embedding)
         

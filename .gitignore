@@ -48,7 +48,6 @@ checkpoints/*.json
 !databases/lightning_fast_db.json
 
 # Images (ignore all except README)
-Testing images/*
 !Testing images/README.md
 
 # Environment
