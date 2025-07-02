@@ -62,3 +62,6 @@ ENV/
 
 # System
 Thumbs.db
+
+
+/api/arcface_database.json
