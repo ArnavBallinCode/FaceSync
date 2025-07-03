@@ -1,6 +1,6 @@
-# Lightning Fast Face Matcher API
+# FaceSync
 
-**Ultra-fast, minimal face matching with 7000+ faces pre-loaded**
+**Face Match pipeline with about 100% accuracy**
 
 ---
 
