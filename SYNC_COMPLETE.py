@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
 """
-SYNCHRONIZATION VERIFICATION REPORT
-Perfect Consistency Implementation Summary
+Lightning Fast Face Matcher API
+Ultra-fast, minimal face matching with 7000 faces pre-loaded
 
 Copyright (c) 2025 Arnav Angarkar. All rights reserved.
 Author: Arnav Angarkar
 
-PROPRIETARY SOFTWARE - All rights reserved.
+PROPRIETARY AND CONFIDENTIAL
+This software and its documentation are proprietary to Arnav Angarkar.
+No part of this software may be copied, reproduced, distributed, transmitted,
+transcribed, stored in a retrieval system, or translated into any human or
+computer language, in any form or by any means, electronic, mechanical,
+magnetic, optical, chemical, manual, or otherwise, without the express
+written permission of Arnav Angarkar.
+
+Unauthorized copying, distribution, or use of this software is strictly
+prohibited and may result in severe civil and criminal penalties.
 """
 
 print("=" * 70)

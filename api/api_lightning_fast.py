@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Lightning Fast Face Matcher API
 Ultra-fast, minimal face matching with 7000 faces pre-loaded
@@ -17,6 +16,8 @@ written permission of Arnav Angarkar.
 Unauthorized copying, distribution, or use of this software is strictly
 prohibited and may result in severe civil and criminal penalties.
 """
+
+#!/usr/bin/env python3
 from fastapi import FastAPI, File, UploadFile, HTTPException
 import numpy as np
 import faiss

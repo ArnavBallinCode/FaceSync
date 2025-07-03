@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
-Professional Database Builder
-Recursively scans all image folders and adds new images to the lightning fast database.
-Supports incremental updates - only processes new images not already in the database.
+Lightning Fast Face Matcher API
+Ultra-fast, minimal face matching with 7000 faces pre-loaded
 
 Copyright (c) 2025 Arnav Angarkar. All rights reserved.
 Author: Arnav Angarkar

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Auto-Sync Script for Lightning Fast Database
-Automatically detects new images and rebuilds database for 100% consistency
+Lightning Fast Face Matcher API
+Ultra-fast, minimal face matching with 7000 faces pre-loaded
 
 Copyright (c) 2025 Arnav Angarkar. All rights reserved.
 Author: Arnav Angarkar

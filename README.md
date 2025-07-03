@@ -1,20 +1,37 @@
-# DeepFace v2 - Professional Face Recognition System
+# Lightning Fast Face Matcher API
 
-**Copyright (c) 2025 Arnav Angarkar. All rights reserved.**  
-**Author: Arnav Angarkar**
+**Ultra-fast, minimal face matching with 7000+ faces pre-loaded**
 
-> **⚠️  PROPRIETARY SOFTWARE - UNAUTHORIZED USE PROHIBITED**  
-> This software is proprietary and confidential. See [LICENSE](./LICENSE) for full terms.
+---
 
-## 🎯 **Perfect Consistency Guarantee**
+**Tech Stack:**  
+- Python 3.11  
+- FastAPI  
+- DeepFace (ArcFace backend)  
+- FAISS  
+- NumPy, Pillow  
+- Uvicorn  
+- Docker (optional)
+
+**Author:** Arnav Angarkar  
+**Copyright (c) 2025 Arnav Angarkar. All rights reserved.**
+
+> **PROPRIETARY AND CONFIDENTIAL**  
+> This software and its documentation are proprietary to Arnav Angarkar.  
+> No part of this software may be copied, reproduced, distributed, transmitted, transcribed, stored in a retrieval system, or translated into any human or computer language, in any form or by any means, electronic, mechanical, magnetic, optical, chemical, manual, or otherwise, without the express written permission of Arnav Angarkar.  
+> Unauthorized copying, distribution, or use of this software is strictly prohibited and may result in severe civil and criminal penalties.
+
+---
+
+##  **Perfect Consistency Guarantee**
 
 This system ensures **100% identical results** between database building and lightning-fast matching by using **exactly the same parameters**:
 
-- ✅ **ArcFace Model**: Same model, same version
-- ✅ **Detection**: `enforce_detection=True` (both systems)
-- ✅ **Backend**: `detector_backend='opencv'` (both systems)  
-- ✅ **Normalization**: Identical L2 normalization
-- ✅ **Preprocessing**: Same image conversion pipeline
+-  **ArcFace Model**: Same model, same version
+-  **Detection**: `enforce_detection=True` (both systems)
+-  **Backend**: `detector_backend='opencv'` (both systems)  
+-  **Normalization**: Identical L2 normalization
+-  **Preprocessing**: Same image conversion pipeline
 
 ## 📁 Project Structure
 
