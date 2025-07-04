@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FaceSync - List Faces</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f6f8fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: #fff;
+      margin-top: 60px;
+      padding: 32px 40px 24px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      color: #1a237e;
+      margin-bottom: 12px;
+      font-size: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+    }
+    th, td {
+      border: 1px solid #e0e0e0;
+      padding: 8px 6px;
+      font-size: 1rem;
+    }
+    th {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+    .footer {
+      margin-top: 40px;
+      color: #888;
+      font-size: 0.95rem;
+    }
+    .nav {
+      margin-top: 22px;
+    }
+    .nav a {
+      color: #1976d2;
+      text-decoration: none;
+      font-weight: 500;
+      margin: 0 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>All Faces in Database</h1>
+    <div id="facesTable">Loading...</div>
+    <div class="nav">
+      <a href="index.html">&larr; Home</a> |
+      <a href="upload.html">Batch Upload</a> |
+      <a href="match.html">Match Face</a>
+    </div>
+  </div>
+  <div class="footer">
+    &copy; 2025 Arnav Angarkar &mdash; FaceSync
+  </div>
+  <script>
+    fetch('http://localhost:8002/list_faces')
+      .then(r => r.json())
+      .then(data => {
+        if (data.faces && data.faces.length > 0) {
+          let html = `<table><tr><th>ID</th><th>Image</th><th>Added</th></tr>`;
+          data.faces.forEach(face => {
+            html += `<tr><td>${face.id}</td><td>${face.image_name}</td><td>${new Date(face.added_time*1000).toLocaleString()}</td></tr>`;
+          });
+          html += `</table>`;
+          document.getElementById('facesTable').innerHTML = html;
+        } else {
+          document.getElementById('facesTable').innerHTML = 'No faces in database.';
+        }
+      })
+      .catch(() => {
+        document.getElementById('facesTable').innerHTML = 'Error loading faces.';
+      });
+  </script>
+</body>
+</html>

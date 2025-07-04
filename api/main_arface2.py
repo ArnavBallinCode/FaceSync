@@ -149,6 +149,7 @@ def root():
         "faces_in_database": len(face_db),
         "endpoints": {
             "add_face": "POST /add_face - Add a new face to the database",
+            "add_faces_multi": "POST /add_faces_multi - Add multiple faces using filenames as IDs",
             "match_face": "POST /match_face - Match a face against the database",
             "list_faces": "GET /list_faces - List all faces in database",
             "delete_face": "DELETE /delete_face/{id} - Delete a face from database",
