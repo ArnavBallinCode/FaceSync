@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the code
 COPY . .
 
-# Copy UI files
+# Copy UI files for Docker static serving
 COPY index.html ./
 COPY upload.html ./
 COPY match.html ./

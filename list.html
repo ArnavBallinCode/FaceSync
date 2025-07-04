@@ -18,12 +18,13 @@
     .container {
       background: #fff;
       margin-top: 60px;
-      padding: 32px 40px 24px 40px;
+      padding: 32px 24px 24px 24px;
       border-radius: 12px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-      max-width: 500px;
+      max-width: 600px;
       width: 100%;
       text-align: center;
+      overflow-x: auto;
     }
     h1 {
       color: #1a237e;
@@ -34,15 +35,23 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 18px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(25,118,210,0.04);
     }
     th, td {
       border: 1px solid #e0e0e0;
       padding: 8px 6px;
       font-size: 1rem;
+      word-break: break-word;
     }
     th {
       background: #e3f2fd;
       color: #1976d2;
+    }
+    tr:nth-child(even) {
+      background: #f6f8fa;
     }
     .footer {
       margin-top: 40px;
@@ -78,9 +87,9 @@
       .then(r => r.json())
       .then(data => {
         if (data.faces && data.faces.length > 0) {
-          let html = `<table><tr><th>ID</th><th>Image</th><th>Added</th></tr>`;
+          let html = `<table><tr><th>ID</th><th>Index</th><th>Image</th><th>Added</th><th>Model</th></tr>`;
           data.faces.forEach(face => {
-            html += `<tr><td>${face.id}</td><td>${face.image_name}</td><td>${new Date(face.added_time*1000).toLocaleString()}</td></tr>`;
+            html += `<tr><td>${face.id}</td><td>${face.index}</td><td>${face.image_name}</td><td>${new Date(face.added_time*1000).toLocaleString()}</td><td>${face.model}</td></tr>`;
           });
           html += `</table>`;
           document.getElementById('facesTable').innerHTML = html;

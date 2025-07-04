@@ -25,6 +25,7 @@ import os
 import time
 import json
 from typing import Optional, List
+from fastapi.staticfiles import StaticFiles
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -137,6 +138,9 @@ def load_database():
 
 # Load existing database on startup
 load_database()
+
+# Serve static UI files from project root
+app.mount("/", StaticFiles(directory="/app", html=True), name="static")
 
 @app.get("/")
 def root():

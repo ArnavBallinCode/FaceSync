@@ -33,7 +33,7 @@ This system ensures **100% identical results** between database building and lig
 -  **Normalization**: Identical L2 normalization
 -  **Preprocessing**: Same image conversion pipeline
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 api/                     # Two main API servers
@@ -54,7 +54,7 @@ Testing images/         # Images for testing and database building
 requirements.txt        # Python dependencies
 ```
 
-## 🚀 Quickstart
+##  Quickstart
 
 1. **Setup Environment**
    ```bash
@@ -87,7 +87,7 @@ requirements.txt        # Python dependencies
    python database_builders/database_builder.py
    ```
 
-## 🧪 Quick Test
+##  Quick Test
 
 **Test Lightning Fast API:**
 ```bash
@@ -104,7 +104,30 @@ curl -X POST "http://127.0.0.1:8002/match_face" \
   -F "top_k=3"
 ```
 
-## � Performance
+## Run with Docker
+
+1. **Build the Docker image:**
+   ```bash
+   docker build -t facesync:latest .
+   ```
+
+2. **Run the container:**
+   ```bash
+   docker run -it --rm -p 8002:8002 facesync:latest
+   ```
+   - The API and UI will be available at `http://localhost:8002/ui/index.html`
+   - All endpoints (add, match, list, delete, stats) are accessible via the UI or API.
+
+3. **Batch upload images (from host):**
+   - Make sure the API is running in Docker and accessible at `http://localhost:8002`.
+   - Run the batch upload script from your host:
+     ```bash
+     python batch_upload_testing_images.py
+     ```
+
+---
+
+##  Performance
 
 - **Lightning Fast API**: <50ms per search, 7000+ faces
 - **Database Builder**: Incremental updates, processes only new images
