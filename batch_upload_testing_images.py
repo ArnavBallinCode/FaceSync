@@ -22,7 +22,7 @@ import requests
 
 API_URL = "http://localhost:8002/add_faces_multi"
 IMAGES_DIR = "Testing images"
-BATCH_SIZE = 900
+BATCH_SIZE = 999
 
 # Get all image files in the directory (no subfolders)
 all_files = [f for f in os.listdir(IMAGES_DIR) if os.path.isfile(os.path.join(IMAGES_DIR, f))]

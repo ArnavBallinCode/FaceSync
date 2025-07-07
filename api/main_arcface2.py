@@ -24,16 +24,32 @@ import io
 import os
 import time
 import json
+import sys
+import subprocess
 from typing import Optional, List
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
-# Initialize FastAPI app
+# Initialize FastAPI app with increased limits for batch uploads
 app = FastAPI(
     title="DeepFace API with ArcFace",
     description="High-accuracy face recognition API using ArcFace model",
     version="2.0.0"
 )
+
+# Configure multipart limits for large batch uploads
+from starlette.middleware import Middleware
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class MultipartLimitMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        # Increase multipart limits for batch uploads
+        if hasattr(request, "scope"):
+            request.scope["multipart_max_parts"] = 10000
+            request.scope["multipart_max_files"] = 10000
+        return await call_next(request)
+
+app.add_middleware(MultipartLimitMiddleware)
 
 # Add CORS middleware after app is defined
 app.add_middleware(
@@ -440,6 +456,44 @@ async def add_faces_multi(files: List[UploadFile] = File(...)):
         "results": results,
         "total_faces": len(face_db)
     }
+
+@app.post('/batch_upload_from_ui')
+async def batch_upload_from_ui():
+    """Trigger batch upload script from UI"""
+    import subprocess
+    try:
+        result = subprocess.run([
+            sys.executable, "ui_batch_upload.py"
+        ], capture_output=True, text=True, timeout=1800)  # 30 min timeout
+        
+        if result.returncode == 0:
+            return json.loads(result.stdout)
+        else:
+            return {
+                "status": "error", 
+                "message": f"Script failed: {result.stderr}"
+            }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+@app.post('/flatten_images_from_ui')
+async def flatten_images_from_ui():
+    """Trigger image flattening script from UI"""
+    import subprocess
+    try:
+        result = subprocess.run([
+            sys.executable, "ui_flatten_images.py"
+        ], capture_output=True, text=True, timeout=300)  # 5 min timeout
+        
+        if result.returncode == 0:
+            return json.loads(result.stdout)
+        else:
+            return {
+                "status": "error", 
+                "message": f"Script failed: {result.stderr}"
+            }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 if __name__ == "__main__":
     import uvicorn

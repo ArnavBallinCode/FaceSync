@@ -104,7 +104,7 @@ curl -X POST "http://127.0.0.1:8002/match_face" \
   -F "top_k=3"
 ```
 
-## Run with Docker
+## 🚀 Run with Docker
 
 1. **Build the Docker image:**
    ```bash
@@ -124,6 +124,42 @@ curl -X POST "http://127.0.0.1:8002/match_face" \
      ```bash
      python batch_upload_testing_images.py
      ```
+
+## Deploy on AWS EKS
+
+1. **Build and push to ECR:**
+   ```bash
+   # Create ECR repository
+   aws ecr create-repository --repository-name facesync
+   
+   # Get login token
+   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-1.amazonaws.com
+   
+   # Build and tag
+   docker build -t facesync:latest .
+   docker tag facesync:latest <account-id>.dkr.ecr.us-east-1.amazonaws.com/facesync:latest
+   
+   # Push to ECR
+   docker push <account-id>.dkr.ecr.us-east-1.amazonaws.com/facesync:latest
+   ```
+
+2. **Update k8s deployment:**
+   ```bash
+   # Update image in k8s-deployment.yaml
+   sed -i 's|facesync:latest|<account-id>.dkr.ecr.us-east-1.amazonaws.com/facesync:latest|g' k8s-deployment.yaml
+   ```
+
+3. **Deploy to EKS:**
+   ```bash
+   kubectl apply -f k8s-deployment.yaml
+   
+   # Get LoadBalancer URL
+   kubectl get service facesync-service
+   ```
+
+4. **Access UI:**
+   - Visit: `http://<load-balancer-url>/ui/index.html`
+   - Use automation buttons for batch upload and image flattening
 
 ---
 

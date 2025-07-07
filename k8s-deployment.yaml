@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: facesync-deployment
+  labels:
+    app: facesync
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: facesync
+  template:
+    metadata:
+      labels:
+        app: facesync
+    spec:
+      containers:
+      - name: facesync
+        image: facesync:latest
+        ports:
+        - containerPort: 8002
+        env:
+        - name: DOCKER_ENV
+          value: "true"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8002
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8002
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        volumeMounts:
+        - name: facesync-storage
+          mountPath: /app/Testing images
+      volumes:
+      - name: facesync-storage
+        persistentVolumeClaim:
+          claimName: facesync-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: facesync-service
+spec:
+  selector:
+    app: facesync
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8002
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: facesync-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: gp2
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: facesync-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: facesync-deployment
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

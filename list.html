@@ -78,6 +78,15 @@
       <a href="upload.html">Batch Upload</a> |
       <a href="match.html">Match Face</a>
     </div>
+    <div style="margin-top:18px;">
+      <button onclick="runBatchUpload()" style="background:#4caf50;color:#fff;border:none;border-radius:6px;padding:10px 20px;cursor:pointer;margin:5px;">
+        Auto Batch Upload
+      </button>
+      <button onclick="flattenImages()" style="background:#ff9800;color:#fff;border:none;border-radius:6px;padding:10px 20px;cursor:pointer;margin:5px;">
+        Flatten Images
+      </button>
+    </div>
+    <div id="automationResult" style="margin-top:12px;padding:10px;border-radius:6px;display:none;"></div>
   </div>
   <div class="footer">
     &copy; 2025 Arnav Angarkar &mdash; FaceSync
@@ -100,6 +109,56 @@
       .catch(() => {
         document.getElementById('facesTable').innerHTML = 'Error loading faces.';
       });
+    
+    async function runBatchUpload() {
+      const btn = event.target;
+      btn.disabled = true;
+      btn.textContent = 'Running...';
+      const resultDiv = document.getElementById('automationResult');
+      
+      try {
+        const res = await fetch('/batch_upload_from_ui', { method: 'POST' });
+        const data = await res.json();
+        
+        if (data.status === 'success') {
+          resultDiv.innerHTML = `<div style="color:#4caf50;">Batch upload completed! Uploaded ${data.results.total_uploaded}/${data.results.total_files} faces in ${data.results.batches.length} batches.</div>`;
+        } else {
+          resultDiv.innerHTML = `<div style="color:#f44336;">Error: ${data.message}</div>`;
+        }
+        resultDiv.style.display = 'block';
+      } catch (err) {
+        resultDiv.innerHTML = `<div style="color:#f44336;">Network error: ${err.message}</div>`;
+        resultDiv.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Auto Batch Upload';
+      }
+    }
+    
+    async function flattenImages() {
+      const btn = event.target;
+      btn.disabled = true;
+      btn.textContent = 'Flattening...';
+      const resultDiv = document.getElementById('automationResult');
+      
+      try {
+        const res = await fetch('/flatten_images_from_ui', { method: 'POST' });
+        const data = await res.json();
+        
+        if (data.status === 'success') {
+          resultDiv.innerHTML = `<div style="color:#4caf50;">${data.message}</div>`;
+        } else {
+          resultDiv.innerHTML = `<div style="color:#f44336;">Error: ${data.message}</div>`;
+        }
+        resultDiv.style.display = 'block';
+      } catch (err) {
+        resultDiv.innerHTML = `<div style="color:#f44336;">Network error: ${err.message}</div>`;
+        resultDiv.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Flatten Images';
+      }
+    }
   </script>
 </body>
 </html>
